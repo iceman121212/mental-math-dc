@@ -1,26 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+/* eslint-disable arrow-body-style */
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '.';
+import GameStateBefore from './components/GameStates/GameStateBefore';
+import GameStateMid from './components/GameStates/GameStateMid';
+import GameStatePost from './components/GameStates/GameStatePost';
+import { GameState } from './redux/gameState/gameStateReducer';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = (): JSX.Element => {
+  const [startTime, setStartTime] = useState(new Date());
+  const [endTime, setEndTime] = useState(new Date());
+  const gameState = useSelector((state: RootState) => state.gameState);
+
+  if (gameState === GameState.Before) {
+    return <GameStateBefore setStartTime={setStartTime} />;
+  }
+  if (gameState === GameState.Mid) {
+    return <GameStateMid setEndTime={setEndTime} />;
+  }
+  return <GameStatePost startTime={startTime} endTime={endTime} />;
+};
 
 export default App;
